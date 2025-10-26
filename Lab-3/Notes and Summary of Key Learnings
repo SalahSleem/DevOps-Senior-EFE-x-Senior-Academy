@@ -1,0 +1,49 @@
+A namespace in Kubernetes is a logical space inside the cluster used to group and isolate resources like pods, services, and quotas.
+It’s useful for separating environments or teams so that their resources don’t conflict with each other.
+
+A deployment ensures that a specific number of identical pods are always running.
+If a pod crashes, Kubernetes automatically recreates it.
+By adding resource requests and limits, we control how much CPU and memory each pod can use — preventing one app from consuming everything.
+
+A service provides a stable way to access pods, even if their IP addresses change.
+The NodePort type exposes the application to traffic from outside the cluster, letting us access it through a specific port on the host machine.
+
+When we accessed NGINX through the NodePort, Kubernetes routed our request from the host machine into the correct pod.
+This confirmed that our service was configured properly and traffic is flowing into the namespace.
+
+Scaling the deployment increased the number of running pods from two to four.
+This helps handle more user requests and provides high availability — if one pod fails, others can still serve traffic without downtime.
+
+A ResourceQuota limits how many resources (like pods, CPU, and memory) can be used inside a namespace.
+It’s a way to ensure that one team or application doesn’t use more than its fair share of the cluster’s resources.
+
+When we tried to scale beyond the quota limit, Kubernetes blocked the request.
+This demonstrated that the ResourceQuota was successfully enforced — protecting the cluster from over-allocation or resource exhaustion.
+
+By listing and describing all the resources in our namespace, we confirmed that everything (deployments, pods, services, quotas) is running as expected and still within the defined limits.
+It’s an essential step for validation and troubleshooting.
+
+Creating a second namespace, called db-app, gave us a separate environment for our database layer.
+This isolation is good practice — it keeps different components, like web and database, organized and prevents conflicts.
+
+We deployed a single MySQL instance inside the db-app namespace.
+At this stage, the container runs with default settings — no root password or database defined yet.
+This setup prepares the base deployment so we can configure it later.
+
+We used the kubectl set env command to dynamically add environment variables to the running MySQL deployment.
+These variables defined the database name and root password.
+It showed how environment variables can be injected safely, making configuration more flexible and avoiding hard-coding sensitive values in YAML files.
+
+Summary of Key Learnings
+
+Namespaces isolate environments and teams.
+
+Deployments manage replicas and ensure high availability.
+
+Services make pods accessible inside and outside the cluster.
+
+Scaling improves performance and fault tolerance.
+
+ResourceQuotas enforce limits to keep cluster usage fair.
+
+Environment variables allow dynamic configuration for secure and flexible applications.
