@@ -1,0 +1,41 @@
+we already have all the files we needed from https://github.com/abdelrahmanonline4/EFE-Labs-/tree/Master/Lab2
+
+so we start build 
+
+docker build -t lab02-flask:latest .
+# check the image 
+docker images
+
+# run it
+docker run --rm -d -p 8080:5000 --name lab02-flask-container lab02-flask:latest
+
+# check the container 
+docker ps
+# testing 
+curl http://localhost:8080
+
+NOTES
+
+The Flask app was built with one route that returns a health message.
+Setting host="0.0.0.0" lets it receive requests from outside the container.
+
+The requirements.txt file lists the needed dependency — Flask — so Docker knows what to install.
+
+The Dockerfile defines how to build the image:
+it starts from a lightweight Python base image, installs dependencies, copies the code, exposes port 5000, and runs the app.
+
+Building the image (docker build) packages everything into one portable unit that can run anywhere.
+
+Running the container (docker run -p 8080:5000) maps port 8080 on the host to port 5000 inside the container, making the Flask app reachable at http://localhost:8080.
+
+Testing with curl confirms that the app responds correctly and the container is working.
+
+Docker Compose was used to define two services — NGINX and MySQL — running together on one private network.
+This setup shows how multiple containers can work together, similar to real microservices.
+
+The NGINX container serves the default web page on port 8080.
+The MySQL container runs on an internal network and stores data in a persistent volume so it isn’t lost when containers restart.
+
+Using ping between the two services confirmed they can communicate through the shared network.
+
+In the end, the lab showed how to containerize a web app, connect services securely, and keep data persistent between runs.
