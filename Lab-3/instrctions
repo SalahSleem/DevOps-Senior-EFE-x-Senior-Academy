@@ -1,0 +1,69 @@
+# ☸️ Lab 03 — Managing Kubernetes Deployments, Services, and Resource Quotas in Dedicated Namespaces
+
+This lab demonstrates how to use Kubernetes to isolate resources with namespaces, deploy web and database applications, control resources, and manage configurations dynamically.
+
+---
+
+## 🎯 Lab Objectives
+- Understand and create **Namespaces**
+- Deploy **NGINX** and **MySQL** applications
+- Expose workloads using **Services**
+- Practice **scaling** Deployments
+- Apply **ResourceQuotas** to limit usage
+- Work with **environment variables**
+
+---
+
+## 🧩 Task 1 — Create a Namespace
+
+```bash
+kubectl create namespace web-app          # Create a dedicated namespace called 'web-app'
+kubectl get namespaces                    # Verify that the namespace was successfully created
+
+But what is the namespaces it is a logical space inside the cluster used to group and isolate resources (like pods, services, and quotas).
+
+Task 2 — Create an NGINX Deployment
+
+kubectl apply -f nginx-deployment.yaml   # Deploy NGINX
+kubectl get pods -n web-app              # Check if both pods are running
+
+Task 3 — Expose NGINX with a Service
+
+kubectl apply -f nginx-service.yaml      # Create the service
+kubectl get svc -n web-app               # List services to verify
+
+Task 4 — Scale the Deployment
+
+kubectl scale deployment nginx-deployment --replicas= 4 -n web-app   # Scale to 4 replicas
+kubectl get pods -n web-app                                        # Check that more pods were created
+
+Task 5 — Create a ResourceQuota
+
+kubectl apply -f resource-quota.yaml     # Apply the quota
+kubectl describe quota webapp-quota -n web-app   # Review usage vs limits
+
+Task 6 — Test Quota Enforcement
+
+kubect scale deployment nginx-deployment --replicas=10 -n web-app   # Try to scale beyond quota
+
+Task 7 — Verify All Resources
+
+kubectl get all -n web-app                    # List all resources
+kubectl describe quota webapp-quota -n web-app   # Check current usage vs. limits
+
+Task 8 — Create a Namespace for the Database
+
+kubectl create namespace db-app               # Create a namespace for MySQL
+kubectl get namespaces                        # Confirm both web-app and db-app exist
+
+Task 9 — Create MySQL Deployment
+
+kubectl apply -f mysql-deployment.yaml       # Deploy MySQL
+kubectl get pods -n db-app                   # Verify MySQL pod is running
+
+Task 10 Add Environment Variables
+
+kubectl set env deployment/mysql-deployment -n db-app \
+MYSQL_ROOT_PASSWORD=12345 MYSQL_DATABASE=school     # Inject environment variables
+
+kubectl describe deployment mysql-deployment -n db-app   # Verify env variables are applied
