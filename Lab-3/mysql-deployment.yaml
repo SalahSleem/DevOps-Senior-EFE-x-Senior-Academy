@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment                     # Deployment name
+  namespace: db-app                          # Run inside the db-app namespace
+spec:
+  replicas: 1                                # Start with one replica
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql                        # Container name
+          image: mysql:latest                # Use the latest MySQL image
+          ports:
+            - containerPort: 3306            # Default MySQL port
