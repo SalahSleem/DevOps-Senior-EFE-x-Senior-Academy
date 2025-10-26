@@ -1,2 +1,2 @@
-# DevOps-Senior-EFE-x-Senior-Academy
-repositor for labs in devops
+# DevOps-EFE-x-Senior-Academy
+repository for labs in devops
