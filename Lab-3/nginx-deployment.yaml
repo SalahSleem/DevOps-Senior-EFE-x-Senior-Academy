@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment                 # The deployment name
+  namespace: web-app                     # We deploy inside 'web-app' namespace
+spec:
+  replicas: 2                            # Two replicas for availability
+  selector:
+    matchLabels:
+      app: nginx                         # Selector to match pods by label
+  template:
+    metadata:
+      labels:
+        app: nginx                       # Label used by the selector
+    spec:
+      containers:
+        - name: nginx                    # Container name
+          image: nginx:latest             # Use the official NGINX image
+          ports:
+            - containerPort: 80           # Container will listen on port 80
+          resources:
+            requests:                     # Minimum guaranteed resources
+              cpu: "100m"
+              memory: "128Mi"
+            limits:                       # Maximum allowed resources
+              cpu: "250m"
+              memory: "256Mi"
