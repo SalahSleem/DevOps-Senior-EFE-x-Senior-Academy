@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service                    # Name of the service
+  namespace: web-app                     # Same namespace as our deployment
+spec:
+  type: NodePort                         # Makes service accessible via a node port
+  selector:
+    app: nginx                           # Connects this service to pods labeled 'app=nginx'
+  ports:
+    - port: 80                           # Internal cluster port
+      targetPort: 80                     # Port exposed by the container
+      nodePort: 30080                    # External port accessible from outside the cluster
