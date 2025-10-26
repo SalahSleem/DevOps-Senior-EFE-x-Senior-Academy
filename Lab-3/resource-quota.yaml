@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: webapp-quota                     # Resource quota name
+  namespace: web-app                     # Applies to the web-app namespace
+spec:
+  hard:
+    pods: "5"                            # Maximum number of pods in this namespace
+    requests.cpu: "500m"                 # Max total CPU requests
+    requests.memory: "512Mi"             # Max total memory requests
+    limits.cpu: "1"                      # Max total CPU limits
+    limits.memory: "1Gi"                 # Max total memory limits
