@@ -1,0 +1,42 @@
+---
+- name: Manage Packages and Services with Variables
+  hosts: all
+  become: yes
+
+  vars:
+    web_package: nginx
+    tools:
+      - git
+      - curl
+      - vim
+
+  tasks:
+    - name: Remove the main package
+      package:
+        name: "{{ web_package }}"
+        state: absent
+
+    - name: Install multiple tools
+      package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ tools }}"
+
+    - name: Install the main web package again
+      package:
+        name: "{{ web_package }}"
+        state: present
+
+    - name: Enable and start the web service
+      service:
+        name: "{{ web_package }}"
+        state: started
+        enabled: yes
+
+    - name: Check the version of the web package
+      command: "{{ web_package }} -v"
+      register: version_output
+
+    - name: Display the package version result
+      debug:
+        msg: "{{ version_output.stdout }}"
