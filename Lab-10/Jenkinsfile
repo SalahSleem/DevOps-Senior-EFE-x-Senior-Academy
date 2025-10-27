@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    dockerfile true
     environment {
         IMAGE_NAME = "myapp"
         CONTAINER_NAME = "myapp-con"
