@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:
+  MYSQL_PORT: "3306"
+  MYSQL_BIND_ADDRESS: "0.0.0.0"
