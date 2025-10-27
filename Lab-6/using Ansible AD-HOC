@@ -1,0 +1,27 @@
+Update apt
+
+ansible all -m shell -a "apt update -y" --become
+
+Install NGINX
+
+ansible all -m shell -a "apt install -y nginx" --become
+
+Start and enable NGINX service
+
+ansible all -m shell -a "systemctl start nginx && systemctl enable nginx" --become
+
+Check service status
+
+ansible all -m shell -a "systemctl status nginx --no-pager" --become
+
+Install multiple tools
+
+ansible all -m shell -a "apt install -y git curl vim" --become
+
+Remove NGINX
+
+ansible all -m shell -a "apt remove -y nginx" --become
+
+Purge NGINX completely
+
+ansible all -m shell -a "apt purge -y nginx && apt autoremove -y" --become
