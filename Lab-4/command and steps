@@ -1,0 +1,48 @@
+Step 1 — Create Namespace
+kubectl create namespace web-app
+kubectl get namespaces
+
+Step 2 — Create the Deployment
+
+kubectl apply -f nginx-deploy.yaml
+kubectl get deployments -n web-app
+kubectl get pods -n web-app
+  
+Step 3 — Expose the Deployment
+
+kubectl apply -f nginx-service.yaml
+kubectl get svc -n web-app
+
+Step 4 — Manual Scaling
+
+kubectl scale deployment nginx-deploy --replicas=4 -n web-app
+kubectl get pods -n web-app
+
+Step 5 — Horizontal Pod Autoscaler
+
+kubectl autoscale deployment nginx-deploy -n web-app --min=2 --max=8 --cpu-percent=70
+kubectl get hpa -n web-app
+
+Step 6 — Apply Resource Quota
+
+kubectl apply -f resource-quota.yaml
+kubectl describe quota webapp-quota -n web-app
+
+Step 7 — Rolling Update
+
+kubectl set image deployment/nginx-deploy nginx=nginx:1.27 -n web-app
+kubectl rollout status deployment/nginx-deploy -n web-app
+
+## The image version of the deployment was updated to nginx:1.27.
+Kubernetes performed a rolling update, replacing old pods with new ones gradually to avoid downtime.
+
+Step 8 — Verify Update
+
+kubectl describe deployment nginx-deploy -n web-app | grep Image
+
+Step 9 — Rollback
+
+kubectl rollout undo deployment/nginx-deploy -n web-app
+kubectl rollout status deployment/nginx-deploy -n web-app
+kubectl describe deployment nginx-deploy -n web-app | grep Image
+
