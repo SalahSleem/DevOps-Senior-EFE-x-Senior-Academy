@@ -1,0 +1,21 @@
+Ansible is an open-source IT automation tool developed by Red Hat.
+It allows you to configure systems, deploy applications, and manage infrastructure — all without manual SSHing into servers.
+
+It works by connecting to remote hosts over SSH, then executing predefined tasks using modules or playbooks.
+
+Core Concepts
+Concept	Description
+Control Node	The main machine where Ansible is installed. You run commands from here.
+Managed Nodes	Remote systems that Ansible connects to and manages.
+Inventory File	A file that lists the IPs or hostnames of the managed systems.
+Module	A unit of work in Ansible (e.g., shell, apt, service, ping).
+Ad-hoc Command	A one-line command to quickly perform a single task on managed nodes.
+Playbook	A YAML file that contains multiple tasks to be executed in sequence.
+
+Why We Use Ansible
+
+Automation: Runs repetitive tasks without manual work.
+Consistency: Applies the same configuration to all servers.
+Agentless: Works over SSH — no installation on remote systems.
+Scalability: Manage tens or hundreds of servers at once.
+Reusability: Tasks can be written once and reused in Playbooks.
