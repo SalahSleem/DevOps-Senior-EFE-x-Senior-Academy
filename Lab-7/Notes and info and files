@@ -1,0 +1,83 @@
+What Is an Ansible Role?
+
+An Ansible Role is a predefined structure that helps you organize playbooks and reusable automation logic.
+Instead of writing everything in one big playbook, you can divide tasks into logical groups such as:
+
+Tasks
+Handlers
+Templates
+Variables
+Files
+Roles are reusable — meaning you can apply the same role to multiple servers or projects easily.
+Analogy:
+Think of a role like a “package” in programming — it groups together everything needed for one component (like Apache) in a clean, organized way.
+
+Create the Role Structure
+
+ansible-galaxy init roles/apache
+
+# ansible-galaxy is a tool that comes with Ansible to create or download roles.
+# The init option generates a standard directory structure for a new role called apache
+
+Define Main Tasks
+
+roles/apache/tasks/main.yml
+
+---
+# tasks/main.yml
+
+- name: Install Apache Web Server
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Copy the index.html template
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  notify:
+    - Restart Apache
+  become: yes
+
+
+
+roles/apache/handlers/main.yml
+
+---
+# handlers/main.yml
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+
+
+roles/apache/templates/index.html.j2
+
+<html>
+<head>
+  <title>Welcome Page</title>
+</head>
+<body>
+  <h1>Welcome to {{ ansible_hostname }} Web Server!</h1>
+  <p>Deployed automatically using Ansible Role: Apache</p>
+</body>
+</html>
+
+site.yml ## the main playbook
+
+---
+- name: Deploy Apache Web Server using Role
+  hosts: all
+  become: yes
+
+  roles:
+    - apache
+
+
+Run the Playbook
+
+ansible-playbook site.yml
