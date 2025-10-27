@@ -1,20 +1,20 @@
-# Use an official lightweight Node.js base image
-FROM node:18-alpine
+#BASE Image
+FROM node:16
 
-# Set the working directory inside the container
-WORKDIR /app
+#Working directory
+WORKDIR /usr/src/app
 
-# Copy package files first (for better build caching)
+#COPY package.json
 COPY package*.json ./
 
-# Install production dependencies
-RUN npm install --production
+#TO get dependencies
+RUN npm install
 
-# Copy the rest of the application code
+#COPY all app code
 COPY . .
 
-# Expose the app port (adjust if different)
+#Expose port
 EXPOSE 3000
 
-# Run the app
+#Start server
 CMD ["npm", "start"]
