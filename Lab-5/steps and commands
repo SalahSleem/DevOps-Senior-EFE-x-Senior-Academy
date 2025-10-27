@@ -1,0 +1,51 @@
+Step 1 — Apply a Taint to the Database Node
+
+kubectl taint nodes node01 db=only:NoSchedule
+kubectl get nodes -o wide
+
+## A taint was added to node01 to restrict workloads.
+Only pods with a matching toleration can run on that node.
+This ensures the database runs in isolation for security and performance.
+
+Step 2 — Create ConfigMap and Secret
+
+kubectl apply -f configmap.yaml
+kubectl apply -f secret.yaml
+kubectl get configmaps
+kubectl get secrets
+
+## The ConfigMap stores general MySQL settings, while the Secret securely stores credentials and sensitive environment variables.
+
+Step 3 — Create Persistent Storage
+
+kubectl apply -f pv.yaml
+kubectl apply -f pvc.yaml
+kubectl get pv,pvc
+
+## The PersistentVolume (PV) reserves 2Gi of storage from /mnt/data/mysql on the host.
+The PersistentVolumeClaim (PVC) requests 1Gi from that PV.
+Once bound, MySQL can store data persistently even if the pod restarts.
+
+Step 4 — Deploy MySQL
+
+kubectl apply -f mysql-deployment.yaml
+kubectl get pods -o wide
+
+Step 5 — Create the MySQL Service
+
+kubectl apply -f mysql-service.yaml
+kubectl get svc
+
+Notes
+
+Taint and Toleration isolate database workloads to a specific node for better control and performance.
+
+ConfigMaps store non-sensitive configuration like ports and bind addresses.
+
+Secrets securely manage sensitive information such as passwords.
+
+PersistentVolumes and Claims ensure data is not lost when pods restart.
+
+Deployments manage pod availability and automatically recreate pods if they fail.
+
+ClusterIP services make the database accessible within the Kubernetes cluster.
