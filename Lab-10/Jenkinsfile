@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    dockerfile true
+
+    stages {
+        stage('Checkout') {
+            steps {
+              git branch: 'main', url: 'https://github.com/SalahSleem/efe-senior-git-repo'
+ 
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t myapp .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh 'docker run --name myapp-con -d -p 3000:3000 myapp'
+
+            }
+        }
+    }
+}
